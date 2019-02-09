@@ -9,6 +9,13 @@ res_dir = 'processed_data'
 diff = 2 # speed difference for turns (Ka parameter in collect.py)
 os.makedirs(res_dir, exist_ok=True)
 
+# Speed-turn correspondence:
+# 12 20 - left2
+# 14 18 - left1 
+# 16 16 - straight
+# 18 14 - right1 
+# 20 12 - right2 
+
 for data_id, data_dir in enumerate(data_dirs):
     file_names = glob(os.path.join(data_dir, '*.jpg'))
 

@@ -1,8 +1,20 @@
 # RVSS2019-WS
 Repo for the workshop part of the [Australian Centre for Robotic Vision Summer School RVSS2019](https://www.roboticvision.org/rvss2019)
 
+## Data Collection
+Use on_robot/collect_data/collect.py for collecting images. Robot control:
+- Direction is defined by speed of left and right wheels: `ppi.set_velocity(left, right)`.
+- General speed is set in `Kd` parameter, `Ka` defines how much speed is changed when robot is turning.
+- Press **up** to go straight: `left = right = Kd`.
+- Press **right** to turn right: `left += Ka; right -= Ka`.
+- Press **left** to turn left: `left -= Ka; right += Ka`.
+- When turning in the opposite direction, speed is first reset to `Kd`.
+- Press **space** to stop: `ppi.set_velocity(0, 0)`.
+
+Images are saved to on_robot/collect_data/data. Image naming example: 000001_18_14.jpg, where 000001 - image id, 18 - speed of the left wheel, 14 - speed of the right wheel.
+
 ## Data Preparation
-1. Put all the collected data in folders dataset1, dataset2, etc (no more than 999 images per folder or there'll be problems with names). Image naming example: 000001_18_14.jpg, where 000001 - image id, 18 - speed of the left wheel, 14 - speed of the right wheel.
+1. Put all the collected data in folders dataset1, dataset2, etc (no more than 999 images per folder or there'll be problems with names).
 
 2. Use rename.py to rename all images and put them to processed_data folder. The new naming: 010001_right2.jpg, where first two digits (01) identify dataset folder, las 4 digits (0001) - image id, string (right2) - type of turn.
 
@@ -15,3 +27,4 @@ Repo for the workshop part of the [Australian Centre for Robotic Vision Summer S
 6. Use create_dataset.py to split images into training and validation sets, so that data for each turn is splitted 70/30.
 
 7. Move train_data and val_data folders to on_laptop/dev_data.
+
