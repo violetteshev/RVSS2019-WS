@@ -9,7 +9,7 @@ from steerNet import SteerNet
 from torchvision import transforms
 
 def load_net(wegihts_filename):
-    model = SteerNet()
+    model = SteerNet(5)
     model.load_state_dict(torch.load(wegihts_filename))
     model.eval()        
     return model
@@ -32,25 +32,29 @@ net = load_net("steerNet.pt")
 ppi.set_velocity(0,0)
 
 try:
-    angle = 0
+    Kd = 16
+    Ka = 2
+    left = Kd
+    right = Kd
     while True:
-        # read image from camera 
+        # Read image from camera.
         image = ppi.get_image()
-        # resize to fit network 
+        
+        # Crop and resize to fit network.
+        image = image[80:, :]
         image = cv2.resize(image, (84,84))
-        # preprocess
+        # Preprocess image.
         input_img = preprocess_img(image,transform)
-        # get steering prediction 
-        steer = net(input_img).data.numpy()              
-        
-        print(steer)
+        # Get turn prediction.
+        res = net(input_img).data.numpy()
+        turn = np.argmax(res)        
+        print(turn)
 
-        Kd = 15 
-        Ka = 25
-        left  = int(Kd + Ka*steer)
-        right = int(Kd - Ka*steer)
+        # Find wheels speed values.
+        left  = int(Kd - Ka*2 + turn*Ka)
+        right = int(Kd + Ka*2 - turn*Ka)
         
-        ppi.set_velocity(left,right)
+        ppi.set_velocity(left, right)
         
         
 except KeyboardInterrupt:
