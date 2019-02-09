@@ -28,3 +28,9 @@ Images are saved to on_robot/collect_data/data. Image naming example: 000001_18_
 
 7. Move train_data and val_data folders to on_laptop/dev_data.
 
+## Training
+- on_laptop/steer_net/steerDS.py contains `SteerDataSet` class represents and load (image, label) dataset instances.
+- on_laptop/steer_net/steerNet.py contains steerNet network with following architecture:
+![](/info/network.png)
+- on_laptop/steer_net/train_model.py contains function `train_model` that performs training and validation steps and saves the model that achieves the best accuracy on validation data.
+- Run on_laptop/train.py to train the model. Output directory for model weights and information files is on_laptop/trained_models/{random number}. 
